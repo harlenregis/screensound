@@ -4,6 +4,7 @@ import br.com.alura.screensound.model.Artista;
 import br.com.alura.screensound.model.Musica;
 import br.com.alura.screensound.model.TipoArtista;
 import br.com.alura.screensound.repository.ArtistaRepository;
+import br.com.alura.screensound.service.ConsultaGemini;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,15 +65,22 @@ public class Principal {
     }
 
     private void pesquisarDadosDoArtista() {
-
+        System.out.println("Obter informações sobre qual artista? ");
+        var nome = leitura.nextLine();
+        var resposta = ConsultaGemini.obterInformacao(nome);
+        System.out.println(resposta.trim());
     }
 
     private void buscarMusicasPorArtista() {
+        System.out.println("Buscar músicas de qual artista?");
+        var nome = leitura.nextLine();
+        List<Musica> musicas = repositorio.buscaMusicasPorArtista(nome);
+        musicas.forEach(System.out::println);
     }
 
     private void listarMusicas() {
         List<Artista> artistas = repositorio.findAll();
-        artistas.forEach(System.out::println);
+        artistas.forEach(a -> a.getMusicas().forEach(System.out::println));
     }
 
     private void cadastrarMusicas() {
